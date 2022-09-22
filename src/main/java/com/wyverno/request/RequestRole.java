@@ -27,6 +27,17 @@ public class RequestRole {
     private static final long ROLE_LCN_AIR_ID = 1019869361181311027L;
     private static final long ROLE_YAK_AIR_ID = 1021478052204658718L;
 
+    private static final String exampleRequest =
+                    "Ник-нейм: Mimi_Conti\n" +
+                    "Организация: LCN\n" +
+                    "Ваш ранг: 4\n" +
+                    "Ваше реальное имя(по желанию): Катя\n" +
+                    "Или\n" +
+                    "Ник-нейм: Kuro_Kato\n" +
+                    "Организация: Yakuza\n" +
+                    "Ваш ранг: 8\n" +
+                    "Ваше реальное имя(по желанию):";
+
     protected RequestRole(String nickname, Fraction fraction, int rank, String name) {
         this.nickname = nickname;
         this.fraction = fraction;
@@ -81,13 +92,13 @@ public class RequestRole {
             privateMessage = "Ваша заявка для выдачи роли была одобрена автоматически!";
 
         } catch (BadRankRequestException e) {
-            privateMessage = "В вашей заявка не правильно указан ранг\n" + message.getContentDisplay();
+            privateMessage = "В вашей заявка не правильно указан ранг\n" + message.getContentDisplay() + "\n Пример:\n"+ exampleRequest;
         } catch (BadNicknameRequestException e) {
-            privateMessage = "В вашей заявка не правильно указан ник-нейм\n" + message.getContentDisplay();
+            privateMessage = "В вашей заявка не правильно указан ник-нейм\n" + message.getContentDisplay() + "\n Пример:\n"+ exampleRequest;
         } catch (BadFractionRequestException e) {
-            privateMessage = "В вашей заявка ошибка в пункте организация!\n" + message.getContentDisplay();
+            privateMessage = "В вашей заявка ошибка в пункте организация!\n" + message.getContentDisplay() + "\n Пример:\n"+ exampleRequest;
         } catch (BadRequestException e) {
-            privateMessage = "Ваша заявка составлена не по форме!\n" + message.getContentDisplay();
+            privateMessage = "Ваша заявка составлена не по форме!\n" + message.getContentDisplay() + "\n Пример:\n"+ exampleRequest;
         }
 
 

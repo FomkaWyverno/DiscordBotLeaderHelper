@@ -64,6 +64,9 @@ public class RequestRoleBuilder {
 
         try {
             rank = Integer.parseInt(args[2]);
+            if (rank > 9 || rank < 1) {
+                throw new BadRankRequestException();
+            }
         } catch (NumberFormatException e) {
             logger.debug("Rank is not OK");
             throw new BadRankRequestException();

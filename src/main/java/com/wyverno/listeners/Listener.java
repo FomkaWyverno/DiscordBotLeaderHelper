@@ -21,7 +21,6 @@ public class Listener extends ListenerAdapter {
             if (event.getChannel().getIdLong() == Main.CHAT_REQUEST_ROLE) {
                 logger.info("Got new request Role");
                 RequestRole.requestRoleComplete(event.getMessage(),event.getMember());
-                logger.info("Finish complete request role");
             }
         }
     }

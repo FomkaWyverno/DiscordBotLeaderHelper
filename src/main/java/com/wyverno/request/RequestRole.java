@@ -85,20 +85,26 @@ public class RequestRole {
 
     public static void requestRoleComplete(Message message,Member member) {
         String privateMessage = "";
+        String loggerInfo = "";
         try {
             RequestRole requestRole = new RequestRoleBuilder().build(message.getContentDisplay());
 
             requestRole.giveRoleAndChangeNick(member);
             privateMessage = "Ваша заявка для выдачи роли была одобрена автоматически!";
+            loggerInfo = "Finish complete request role";
 
         } catch (BadRankRequestException e) {
-            privateMessage = "В вашей заявка не правильно указан ранг\n" + message.getContentDisplay() + "\n Пример:\n"+ exampleRequest;
+            privateMessage = "В вашей заявка не правильно указан ранг\n" + message.getContentDisplay() + "\n\nПример:\n"+ exampleRequest;
+            loggerInfo = "In the Request - rank is not correct! NOT FINISHED REQUEST ROLE";
         } catch (BadNicknameRequestException e) {
-            privateMessage = "В вашей заявка не правильно указан ник-нейм\n" + message.getContentDisplay() + "\n Пример:\n"+ exampleRequest;
+            privateMessage = "В вашей заявка не правильно указан ник-нейм\n" + message.getContentDisplay() + "\n\nПример:\n"+ exampleRequest;
+            loggerInfo = "In the Request - nick is not correct! NOT FINISHED REQUEST ROLE";
         } catch (BadFractionRequestException e) {
-            privateMessage = "В вашей заявка ошибка в пункте организация!\n" + message.getContentDisplay() + "\n Пример:\n"+ exampleRequest;
+            privateMessage = "В вашей заявка ошибка в пункте организация!\n" + message.getContentDisplay() + "\n\nПример:\n"+ exampleRequest;
+            loggerInfo = "In the Request - fraction is not correct! NOT FINISHED REQUEST ROLE";
         } catch (BadRequestException e) {
-            privateMessage = "Ваша заявка составлена не по форме!\n" + message.getContentDisplay() + "\n Пример:\n"+ exampleRequest;
+            privateMessage = "Ваша заявка составлена не по форме!\n" + message.getContentDisplay() + "\n\nПример:\n"+ exampleRequest;
+            loggerInfo = "In the Request - filled out incorrectly! NOT FINISHED REQUEST ROLE";
         }
 
 
@@ -108,6 +114,7 @@ public class RequestRole {
 
         message.delete().complete();
         logger.debug("Message request removed!");
+        logger.info(loggerInfo);
     }
 
     public static Member findMember(Guild guild, long id) {

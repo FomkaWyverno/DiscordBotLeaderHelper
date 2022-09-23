@@ -7,6 +7,7 @@ import com.wyverno.request.exceptions.BadRequestException;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,8 +47,12 @@ public class RequestRole {
     }
 
     public void giveRoleAndChangeNick(Member member) {
-        changeNickname(member);
-        giveRole(member);
+        try {
+            changeNickname(member);
+            giveRole(member);
+        } catch (ErrorResponseException e) {
+            logger.info("Request is not finished, cause nickname must be 30 or fewer in length.");
+        }
     }
 
     private void changeNickname(@NotNull Member member) {
@@ -57,7 +62,18 @@ public class RequestRole {
 
         logger.debug("formatNickname = " + formatNickname);
 
-        member.modifyNickname(formatNickname).complete();
+        try {
+            member.modifyNickname(formatNickname).complete();
+        } catch (ErrorResponseException e) {
+            logger.info("Nickname - must be 32 or fewer in length. | Nickname = " + formatNickname);
+            member.getUser().openPrivateChannel().queue(privateChannel -> {
+                privateChannel.sendMessage("Итоговый ваш ник-нейм выйдет больше чем 32 символа!\nА именно: "
+                        + formatNickname +
+                        "\nКоличество в вашем нике будет - "
+                        + formatNickname.length()).complete();
+            });
+            throw e;
+        }
     }
 
     private void giveRole(@NotNull Member member) {

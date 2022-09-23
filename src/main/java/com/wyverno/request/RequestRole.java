@@ -51,7 +51,7 @@ public class RequestRole {
             changeNickname(member);
             giveRole(member);
         } catch (ErrorResponseException e) {
-            logger.info("Request is not finished, cause nickname must be 30 or fewer in length.");
+            logger.info("Request is not finished, cause nickname must be 32 or fewer in length.");
         }
     }
 
@@ -70,7 +70,7 @@ public class RequestRole {
                 privateChannel.sendMessage("Итоговый ваш ник-нейм выйдет больше чем 32 символа!\nА именно: "
                         + formatNickname +
                         "\nКоличество в вашем нике будет - "
-                        + formatNickname.length()).complete();
+                        + formatNickname.length()).queue();
             });
             throw e;
         }

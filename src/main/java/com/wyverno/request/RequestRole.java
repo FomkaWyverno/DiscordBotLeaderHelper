@@ -1,6 +1,5 @@
 package com.wyverno.request;
 
-import com.wyverno.Main;
 import com.wyverno.request.exceptions.BadFractionRequestException;
 import com.wyverno.request.exceptions.BadNicknameRequestException;
 import com.wyverno.request.exceptions.BadRankRequestException;
@@ -8,6 +7,7 @@ import com.wyverno.request.exceptions.BadRequestException;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,7 +50,7 @@ public class RequestRole {
         giveRole(member);
     }
 
-    private void changeNickname(Member member) {
+    private void changeNickname(@NotNull Member member) {
         String formatNickname =
                 String.format("%s | %s" + (!this.name.isEmpty() ? " | " + this.name : ""),
                         this.fraction.getLabel(), this.nickname);
@@ -60,7 +60,7 @@ public class RequestRole {
         member.modifyNickname(formatNickname).complete();
     }
 
-    private void giveRole(Member member) {
+    private void giveRole(@NotNull Member member) {
         switch (fraction) {
             case LCN: {
                 logger.debug(nickname + " ADD ROLE LCN");

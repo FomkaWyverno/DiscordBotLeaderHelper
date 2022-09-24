@@ -13,6 +13,9 @@ import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
 
 public class Main {
@@ -40,17 +43,38 @@ public class Main {
 
         logger.info("Connected!");
 
-        initEvents();
-
         requestHistory();
+
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
+            while (true) {
+                String str = reader.readLine();
+
+                boolean isNeedBreak = false;
+                switch (str) {
+                    case "/stop" : {
+                        logger.info("Discord Bot start to stop");
+                        discordBot.shutdown();
+                        isNeedBreak = true;
+                        break;
+                    }
+                    case "/stopNow": {
+                        logger.info("Discord Bot shutdown now!");
+                        discordBot.shutdownNow();
+                        isNeedBreak = true;
+                        break;
+                    }
+                }
+                if (isNeedBreak) {
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static JDA getDiscordBot() {
         return discordBot;
-    }
-
-    private static void initEvents() {
-        JDA bot = getDiscordBot();
     }
 
     private static void requestHistory() {

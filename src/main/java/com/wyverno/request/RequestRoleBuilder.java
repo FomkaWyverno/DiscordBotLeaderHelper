@@ -33,7 +33,10 @@ public class RequestRoleBuilder {
 
         for (int i = 0; i < args.length; i++) {
             args[i] = new StringBuilder(splitMessage[i])
-                    .delete(0,FORM[i].length())
+                    .delete(splitMessage[i].indexOf(FORM[i]
+                                           .toCharArray()[0]),
+                            splitMessage[i].lastIndexOf(FORM[i]
+                                           .toCharArray()[FORM[i].length()-1]))
                     .toString().trim();
         }
 

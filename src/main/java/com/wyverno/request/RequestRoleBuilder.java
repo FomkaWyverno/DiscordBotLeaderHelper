@@ -32,12 +32,12 @@ public class RequestRoleBuilder {
 
 
         for (int i = 0; i < args.length; i++) {
-            args[i] = new StringBuilder(splitMessage[i])
-                    .delete(splitMessage[i].indexOf(FORM[i]
-                                           .toCharArray()[0]),
-                            splitMessage[i].lastIndexOf(FORM[i]
-                                           .toCharArray()[FORM[i].length()-1]))
-                    .toString().trim();
+            if (splitMessage[i].contains(FORM[i])) {
+                args[i] = new StringBuilder(splitMessage[i])
+                        .delete(0,(splitMessage[i].indexOf(FORM[i]) + FORM[i].length()))
+                        .toString()
+                        .trim();
+            }
         }
 
         checkCorrectForm(args);
@@ -48,8 +48,9 @@ public class RequestRoleBuilder {
     private boolean checkCorrectForm(String[] args) throws BadNicknameRequestException, BadFractionRequestException, BadRankRequestException {
         logger.trace("Checking correction request");
 
-        if (args[0].isEmpty()) {
+        if (args[0] == null || args[0].isEmpty()) {
             logger.debug("Nickname is not OK");
+            logger.debug("Nickname is -> " + args[0]);
             throw new BadNicknameRequestException();
         }
         nickname = args[0];
@@ -60,6 +61,7 @@ public class RequestRoleBuilder {
             fraction = Fraction.valueOf(args[1].toUpperCase());
         } catch (IllegalArgumentException e) {
             logger.debug("Fraction is not OK");
+            logger.debug("Fraction name: " + args[1]);
             throw new BadFractionRequestException();
         }
 
@@ -72,6 +74,7 @@ public class RequestRoleBuilder {
             }
         } catch (NumberFormatException e) {
             logger.debug("Rank is not OK");
+            logger.debug("Rank -> " + args[2]);
             throw new BadRankRequestException();
         }
 

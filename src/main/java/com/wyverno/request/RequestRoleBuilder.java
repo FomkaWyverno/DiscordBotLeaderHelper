@@ -37,6 +37,8 @@ public class RequestRoleBuilder {
                         .delete(0,(splitMessage[i].indexOf(FORM[i]) + FORM[i].length()))
                         .toString()
                         .trim();
+            } else {
+                args[i] = "";
             }
         }
 
